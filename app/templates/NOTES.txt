@@ -1,9 +1,9 @@
-C O S T U D Y
-  ───────────────────────────────────────────────
+{{ "\033[0;36m" }}  C O S T U D Y
+  ───────────────────────────────────────────────{{ "\033[0m" }}
   release   {{ .Release.Name }}
-  namespace {{ "\033[0;32m" }}{{ .Release.Namespace }}{{ "\033[0m" }}
-  url       https://{{ .Values.ingress.host }}
-  backend   {{ .Values.backend.image.tag }}
-  frontend  {{ .Values.frontend.image.tag }}
-  ───────────────────────────────────────────────
+  namespace {{ .Release.Namespace }}
+  url       {{ "\033[0;33m" }}https://{{ .Values.ingress.host }}{{ "\033[0m" }}
+  backend   {{ "\033[0;37m" }}{{ .Values.backend.image.tag }}{{ "\033[0m" }}
+  frontend  {{ "\033[0;37m" }}{{ .Values.frontend.image.tag }}{{ "\033[0m" }}
+{{ "\033[0;36m" }}  ───────────────────────────────────────────────{{ "\033[0m" }}
   © noseyug
