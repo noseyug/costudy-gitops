@@ -6,9 +6,9 @@ aws:
 
 secrets:
   awsPath: "prod/costudy/backend"
-  targetSecretName: "costudy-be-secret"
-  externalSecretName: "backend-external-secret"
-  configMapName: "costudy-be-config"
+  targetSecretName: "costudy-backend-secret"
+  externalSecretName: "costudy-backend-external-secret"
+  configMapName: "costudy-backend-configmap"
 
 registry:
   secretName: gitlab-registry-secret
@@ -16,8 +16,8 @@ registry:
   externalSecretName: "gitlab-registry-external-secret"
 
 backend:
-  name: costudy-be
-  replicaCount: 1
+  name: costudy-backend
+  replicaCount: 2
   revisionHistoryLimit: 10
   image:
     repository: registry.noseyug.online/costudy-group/costudy/costudy-be
@@ -25,7 +25,7 @@ backend:
     pullPolicy: Always
   port: 3001
   service:
-    name: costudy-be-svc
+    name: costudy-backend-service
     type: ClusterIP
     port: 3001
   resources:
@@ -62,8 +62,8 @@ backend:
     EMAIL_FROM: "Costudy <no-reply@noseyug.online>"
 
 frontend:
-  name: costudy-fe
-  replicaCount: 1
+  name: costudy-frontend
+  replicaCount: 2
   revisionHistoryLimit: 10
   image:
     repository: registry.noseyug.online/costudy-group/costudy/costudy-fe
@@ -71,7 +71,7 @@ frontend:
     pullPolicy: Always
   port: 80
   service:
-    name: costudy-fe-svc
+    name: costudy-frontend-service
     type: ClusterIP
     port: 80
   resources:
