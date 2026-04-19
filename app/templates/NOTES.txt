@@ -1,7 +1,7 @@
 C O S T U D Y
   ───────────────────────────────────────────────
   release   {{ .Release.Name }}
-  namespace {{ .Release.Namespace }}
+  namespace {{ "\033[0;32m" }}{{ .Release.Namespace }}{{ "\033[0m" }}
   url       https://{{ .Values.ingress.host }}
   backend   {{ .Values.backend.image.tag }}
   frontend  {{ .Values.frontend.image.tag }}
