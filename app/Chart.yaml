@@ -1,0 +1,6 @@
+apiVersion: v2
+name: costudy
+description: Costudy fullstack app - Backend + Frontend + Ingress
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

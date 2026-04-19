@@ -1,0 +1,21 @@
+# Override file cho production
+# Dùng: helm upgrade --install costudy ./costudy-chart -f values-prod.yaml
+
+namespace: prod
+
+backend:
+  replicaCount: 2
+  image:
+    tag: "latest"   # CI/CD sẽ override bằng --set backend.image.tag=$CI_COMMIT_SHORT_SHA
+  probes:
+    enabled: true
+  # KHÔNG đặt secret ở đây — dùng external secret manager (AWS SSM / Vault)
+
+frontend:
+  replicaCount: 2
+  image:
+    tag: "latest"
+
+ingress:
+  host: costudy.noseyug.online
+  tlsSecretName: cloudflare-origin-tls

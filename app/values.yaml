@@ -1,0 +1,98 @@
+namespace: staging
+
+aws:
+  region: "ap-southeast-1"
+  secretStoreName: "costudy-aws-store"
+
+secrets:
+  awsPath: "prod/costudy/backend"
+  targetSecretName: "costudy-be-secret"
+  externalSecretName: "backend-external-secret"
+  configMapName: "costudy-be-config"
+
+registry:
+  secretName: gitlab-registry-secret
+  awsPath: "prod/costudy/registry"
+  externalSecretName: "gitlab-registry-external-secret"
+
+backend:
+  name: costudy-be
+  replicaCount: 1
+  revisionHistoryLimit: 10
+  image:
+    repository: registry.noseyug.online/costudy-group/costudy/costudy-be
+    tag: "cf2e69d3"
+    pullPolicy: Always
+  port: 3001
+  service:
+    name: costudy-be-svc
+    type: ClusterIP
+    port: 3001
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  probes:
+    enabled: false
+    liveness:
+      path: /api/health
+      initialDelaySeconds: 15
+      periodSeconds: 20
+      failureThreshold: 3
+    readiness:
+      path: /api/health
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      failureThreshold: 3
+  config:
+    PORT: "3001"
+    NODE_ENV: "production"
+    DB_HOST: "costudy-db.ct428ggiqqq8.ap-southeast-1.rds.amazonaws.com"
+    DB_PORT: "5432"
+    DB_USER: "postgres"
+    DB_NAME: "postgres"
+    EMAIL_FROM: "Costudy <no-reply@noseyug.online>"
+
+frontend:
+  name: costudy-fe
+  replicaCount: 1
+  revisionHistoryLimit: 10
+  image:
+    repository: registry.noseyug.online/costudy-group/costudy/costudy-fe
+    tag: "cf2e69d3"
+    pullPolicy: Always
+  port: 80
+  service:
+    name: costudy-fe-svc
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+
+ingress:
+  enabled: true
+  name: costudy-ingress
+  className: nginx
+  host: costudy-staging.noseyug.online
+  tlsSecretName: letsencrypt-tls
+  proxyReadTimeout: "3600"
+  proxySendTimeout: "3600"
+  proxyBodySize: "50m"

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: costudy-cert
+  namespace: {{ .Values.namespace }}
+spec:
+  secretName: {{ .Values.ingress.tlsSecretName }} # Tên secret chứa cert để Ingress dùng
+  issuerRef:
+    name: letsencrypt-cloudflare
+    kind: ClusterIssuer
+  dnsNames:
+  - {{ .Values.ingress.host }} # Lấy từ values.yaml (ví dụ: api.costudy.online)
