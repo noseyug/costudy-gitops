@@ -1,0 +1,11 @@
+{{ "\033[0;34m" }}  C O S T U D Y
+  ───────────────────────────────────────────────{{ "\033[0m" }}
+  release   {{ .Release.Name }}
+  namespace {{ .Release.Namespace }}
+  url       {{ "\033[0;33m" }}https://{{ .Values.ingress.host }}{{ "\033[0m" }}
+  backend   {{ "\033[0;37m" }}{{ .Values.backend.image.tag }}{{ "\033[0m" }}
+  frontend  {{ "\033[0;37m" }}{{ .Values.frontend.image.tag }}{{ "\033[0m" }}
+{{ "\033[0;34m" }}  ───────────────────────────────────────────────{{ "\033[0m" }}
+{{ "\033[0;29m" }}  by {{ "\033[1;35m" }}Van Son{{ "\033[0;35m" }}
+{{ "\033[1;34m" }}  https://github.com/noseyug{{ "\033[0;34m" }}{{ "\033[0m" }}
+{{ "\033[0m" }}

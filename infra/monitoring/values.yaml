@@ -1,0 +1,17 @@
+grafana:
+  ingress:
+   enabled: true
+   ingressClassName: nginx
+   annotations:
+    cert-manage.io/cluster-issuer: "letsencrypt-cloudflare"
+   hosts:
+    - grafana.noseyug.online
+   path: /
+   tls:
+    - secretName: grafana-server-tls
+      hosts:
+        - grafana-server-tls
+grafana.ini:
+   server:
+    root_url: https://grafana.noseyug.online
+    protocol: http

@@ -1,0 +1,16 @@
+secrets:
+  awsPath: "dev/costudy/backend"
+
+registry:
+  awsPath: "dev/costudy/registry"
+
+backend:
+  image:
+    tag: "cf2e69d3"
+
+frontend:
+  image:
+    tag: "cf2e69d3"
+
+ingress:
+  host: costudy-dev.noseyug.online

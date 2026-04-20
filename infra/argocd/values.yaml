@@ -1,0 +1,22 @@
+global:
+  domain: argocd.noseyug.online
+
+configs:
+  params:
+    server.insecure: true  # ArgoCD chạy HTTP, ingress lo TLS
+  secret:
+    gitlabSecret: "costudy-webhook-secret"
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      # KHÔNG cần cert-manager annotation nữa
+    hosts:
+    - argocd.noseyug.online
+    tls:
+    - secretName: argocd-server-tls   # dùng secret vừa tạo
+      hosts:
+      - argocd.noseyug.online
