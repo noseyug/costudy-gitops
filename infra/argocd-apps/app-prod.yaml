@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: costudy-prod
+spec:
+  destination:
+    namespace: prod
+    server: https://kubernetes.default.svc
+  source:
+    path: app
+    repoURL: https://github.com/noseyug/costudy-gitops.git
+   # repoURL: https://gitlab.noseyug.online/costudy-group/costudy-gitops.git
+    targetRevision: k8s
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-prod.yaml
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+      enabled: true

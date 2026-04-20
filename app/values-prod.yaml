@@ -41,4 +41,4 @@ frontend:
 ingress:
   host: costudy.noseyug.online
   certManager:
-    issuerName: letsencrypt-production
+    issuerName: letsencrypt-prod
