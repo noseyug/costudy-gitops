@@ -115,7 +115,7 @@ ingress:
   tlsSecretName: letsencrypt-tls
   certManager:
     enabled: true
-    issuerName: letsencrypt-staging
+    issuerName: letsencrypt-dev
   proxyReadTimeout: "3600"
   proxySendTimeout: "3600"
   proxyBodySize: "50m"
