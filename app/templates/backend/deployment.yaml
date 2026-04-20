@@ -2,21 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.backend.name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.backend.name }}
     {{- include "costudy.labels" . | nindent 4 }}
 spec:
+  {{- if not .Values.backend.hpa.enabled }}
   replicas: {{ .Values.backend.replicaCount }}
+  {{- end }}
   revisionHistoryLimit: {{ .Values.backend.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: {{ .Values.backend.name }}
   strategy:
     type: {{ .Values.backend.strategy.type }}
+    {{- if eq .Values.backend.strategy.type "RollingUpdate" }}
     rollingUpdate:
       maxSurge: {{ .Values.backend.strategy.rollingUpdate.maxSurge }}
       maxUnavailable: {{ .Values.backend.strategy.rollingUpdate.maxUnavailable }}
+    {{- end }}
   template:
     metadata:
       labels:
@@ -34,12 +38,18 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .Values.secrets.configMapName | default "costudy-be-config" }}
+                name: {{ .Values.secrets.configMapName }}
             - secretRef:
-                name: {{ .Values.secrets.targetSecretName | default "costudy-be-secret" }}
+                name: {{ .Values.secrets.targetSecretName }}
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           {{- if .Values.backend.probes.enabled }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.backend.probes.startup.path }}
+              port: {{ .Values.backend.port }}
+            failureThreshold: {{ .Values.backend.probes.startup.failureThreshold }}
+            periodSeconds: {{ .Values.backend.probes.startup.periodSeconds }}
           livenessProbe:
             httpGet:
               path: {{ .Values.backend.probes.liveness.path }}

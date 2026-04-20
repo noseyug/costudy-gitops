@@ -1,27 +1,25 @@
-namespace: staging
-
 aws:
   region: "ap-southeast-1"
   secretStoreName: "costudy-aws-store"
 
 secrets:
-  awsPath: "prod/costudy/backend"
+  awsPath: ""
   targetSecretName: "costudy-backend-secret"
   externalSecretName: "costudy-backend-external-secret"
   configMapName: "costudy-backend-configmap"
 
 registry:
   secretName: gitlab-registry-secret
-  awsPath: "prod/costudy/registry"
+  awsPath: ""
   externalSecretName: "gitlab-registry-external-secret"
 
 backend:
   name: costudy-backend
-  replicaCount: 2
-  revisionHistoryLimit: 10
+  replicaCount: 1
+  revisionHistoryLimit: 2
   image:
     repository: registry.noseyug.online/costudy-group/costudy/costudy-be
-    tag: "cf2e69d3"
+    tag: ""
     pullPolicy: Always
   port: 3001
   service:
@@ -30,18 +28,28 @@ backend:
     port: 3001
   resources:
     requests:
-      cpu: "100m"
-      memory: "128Mi"
+      cpu: "50m"
+      memory: "64Mi"
     limits:
-      cpu: "500m"
-      memory: "512Mi"
+      cpu: "200m"
+      memory: "256Mi"
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
+      maxSurge: 1
+      maxUnavailable: 0
+  hpa:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
   probes:
     enabled: false
+    startup:
+      path: /api/health
+      failureThreshold: 30
+      periodSeconds: 10
     liveness:
       path: /api/health
       initialDelaySeconds: 15
@@ -54,7 +62,7 @@ backend:
       failureThreshold: 3
   config:
     PORT: "3001"
-    NODE_ENV: "production"
+    NODE_ENV: "development"
     DB_HOST: "costudy-db.ct428ggiqqq8.ap-southeast-1.rds.amazonaws.com"
     DB_PORT: "5432"
     DB_USER: "postgres"
@@ -63,11 +71,11 @@ backend:
 
 frontend:
   name: costudy-frontend
-  replicaCount: 2
-  revisionHistoryLimit: 10
+  replicaCount: 1
+  revisionHistoryLimit: 2
   image:
     repository: registry.noseyug.online/costudy-group/costudy/costudy-fe
-    tag: "cf2e69d3"
+    tag: ""
     pullPolicy: Always
   port: 80
   service:
@@ -76,23 +84,38 @@ frontend:
     port: 80
   resources:
     requests:
-      cpu: "50m"
-      memory: "64Mi"
+      cpu: "25m"
+      memory: "32Mi"
     limits:
-      cpu: "200m"
-      memory: "256Mi"
+      cpu: "100m"
+      memory: "128Mi"
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
+      maxSurge: 1
+      maxUnavailable: 0
+  hpa:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 70
+  probes:
+    enabled: false
+    readiness:
+      path: /
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      failureThreshold: 3
 
 ingress:
   enabled: true
   name: costudy-ingress
   className: nginx
-  host: costudy-stag.noseyug.online
+  host: ""
   tlsSecretName: letsencrypt-tls
+  certManager:
+    enabled: true
+    issuerName: letsencrypt-staging
   proxyReadTimeout: "3600"
   proxySendTimeout: "3600"
   proxyBodySize: "50m"
