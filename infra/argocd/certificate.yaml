@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: argocd-server-tls # Tên secret mà ArgoCD sẽ sử dụng
   issuerRef:
-    name: letsencrypt-cloudflare
+    name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
   - argocd.noseyug.online
