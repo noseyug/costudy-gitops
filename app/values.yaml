@@ -91,7 +91,7 @@ ingress:
   enabled: true
   name: costudy-ingress
   className: nginx
-  host: costudy-staging.noseyug.online
+  host: costudy-stag.noseyug.online
   tlsSecretName: letsencrypt-tls
   proxyReadTimeout: "3600"
   proxySendTimeout: "3600"
