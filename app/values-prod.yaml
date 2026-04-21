@@ -39,6 +39,6 @@ frontend:
     enabled: true
 
 ingress:
-  host: costudy.noseyug.online
+  host: costudy-prod.noseyug.online
   certManager:
     issuerName: letsencrypt-prod
