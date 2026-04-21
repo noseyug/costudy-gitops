@@ -12,8 +12,8 @@ metadata:
     {{- end }}
     {{- if .Values.ingress.affinity }}
     nginx.ingress.kubernetes.io/affinity: {{ .Values.ingress.affinity | quote }}
-    nginx.ingress.kubernetes.io/session-cookie-name: {{ .Values.ingress.session-cookie-name | default "route" | quote }}
-    nginx.ingress.kubernetes.io/session-cookie-hash: {{ .Values.ingress.session-cookie-hash | default "sha1" | quote }}
+    nginx.ingress.kubernetes.io/session-cookie-name: {{ index .Values.ingress "session-cookie-name" | quote }}
+    nginx.ingress.kubernetes.io/session-cookie-hash: {{ index .Values.ingress "session-cookie-hash" | quote }}
     {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/enable-real-ip: "true"
