@@ -47,16 +47,16 @@ backend:
   probes:
     enabled: false
     startup:
-      path: /api/health
+      path: /api/rooms/public
       failureThreshold: 30
       periodSeconds: 10
     liveness:
-      path: /api/health
+      path: /api/rooms/public
       initialDelaySeconds: 15
       periodSeconds: 20
       failureThreshold: 3
     readiness:
-      path: /api/health
+      path: /api/rooms/public
       initialDelaySeconds: 5
       periodSeconds: 10
       failureThreshold: 3
