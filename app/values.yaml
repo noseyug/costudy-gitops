@@ -119,3 +119,6 @@ ingress:
   proxyReadTimeout: "3600"
   proxySendTimeout: "3600"
   proxyBodySize: "50m"
+  affinity: "cookie"
+  session-cookie-name: "route"
+  session-cookie-hash: "sha1"
