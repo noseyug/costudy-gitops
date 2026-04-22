@@ -1,7 +1,8 @@
 aws:
   region: "ap-southeast-1"
   secretStoreName: "costudy-aws-store"
-
+  serviceAccount: 
+    name: "costudy-backend-sa"
 secrets:
   awsPath: ""
   targetSecretName: "costudy-backend-secret"
