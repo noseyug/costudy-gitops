@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: grafana-server-tls
   issuerRef:
-    name: letsencrypt-prod
+    name: letsencrypt-dev
     kind: ClusterIssuer
   dnsNames:
   - grafana.noseyug.online
